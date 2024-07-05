@@ -1,6 +1,6 @@
 {
   "name": "node-initdb",
-  "version": "0.0.2-beta.7",
+  "version": "0.0.2",
   "description": "A CLI tool to create a folder and file with some code",
   "main": "index.js",
   "bin": {
