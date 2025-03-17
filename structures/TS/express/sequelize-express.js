@@ -911,5 +911,5 @@ If you encounter any issues, feel free to reach out at ashrafchauhan567@gmail.co
 
         ` }
     ]},
-    cmd : '@types/bcryptjs @types/config @types/cors body-parser typescript cors dotenv express fs http-errors https jsonwebtoken sequelize @types/sequelize mysql2 multer @types/express @types/gravatar @types/jsonwebtoken @types/multer @types/node concurrently @types/http-errors bun bun-types'
+    cmd : '@types/bcryptjs @types/config @types/cors body-parser typescript cors dotenv express fs http-errors https jsonwebtoken sequelize @types/sequelize mysql2 multer @types/express @types/gravatar @types/jsonwebtoken @types/multer @types/node concurrently @types/http-errors'
 }    

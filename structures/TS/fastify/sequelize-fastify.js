@@ -934,5 +934,5 @@ For more information, visit:
 If you encounter any issues, feel free to reach out at ashrafchauhan567@gmail.com or open an issue on GitHub.
         ` }
     ]},
-    cmd : '@fastify/formbody @fastify/cors @fastify/multipart @fastify/static bcryptjs config cors mongoose multer typescript @types/cors @types/jsonwebtoken @types/multer @types/node concurrently @types/config @types/bcryptjs jsonwebtoken http-errors @types/sequelize dotenv fastify fastify-jwt fs ts-node @fastify/jwt sequelize mysql2 bun bun-types'
+    cmd : '@fastify/formbody @fastify/cors @fastify/multipart @fastify/static bcryptjs config cors mongoose multer typescript @types/cors @types/jsonwebtoken @types/multer @types/node concurrently @types/config @types/bcryptjs jsonwebtoken http-errors @types/sequelize dotenv fastify fastify-jwt fs ts-node @fastify/jwt sequelize mysql2'
 }

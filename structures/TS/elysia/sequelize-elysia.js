@@ -907,5 +907,5 @@ If you encounter any issues, feel free to reach out at ashrafchauhan567@gmail.co
 
         ` }
     ]},
-    cmd : '@elysiajs/cookie @elysiajs/cors @elysiajs/jwt @types/bcryptjs @types/busboy @types/mongoose @types/multer bcryptjs busboy dotenv elysia elysia-helmet elysia-rate-limit helmet mongoose multer sequelize-typescript @types/jsonwebtoken typescript bun bun-types @elysiajs/node sequelize mysql2'
+    cmd : '@elysiajs/cookie @elysiajs/cors @elysiajs/jwt @types/bcryptjs @types/busboy @types/mongoose @types/multer bcryptjs busboy dotenv elysia elysia-helmet elysia-rate-limit helmet mongoose multer sequelize-typescript @types/jsonwebtoken typescript @elysiajs/node sequelize mysql2'
 }    

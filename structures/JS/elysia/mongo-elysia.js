@@ -909,5 +909,5 @@ If you encounter any issues, feel free to reach out at ashrafchauhan567@gmail.co
 
             ` } // Empty .env file
     ]},
-    cmd : '@elysiajs/cors @elysiajs/jwt @elysiajs/node dotenv elysia elysia-helmet elysia-rate-limit fs https mongoose jsonwebtoken bun'
+    cmd : '@elysiajs/cors @elysiajs/jwt @elysiajs/node dotenv elysia elysia-helmet elysia-rate-limit fs https mongoose jsonwebtoken'
 }

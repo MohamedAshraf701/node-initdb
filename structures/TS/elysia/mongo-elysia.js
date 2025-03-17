@@ -898,5 +898,5 @@ For more information, visit:
 If you encounter any issues, feel free to reach out at ashrafchauhan567@gmail.com or open an issue on GitHub.
             ` } // Empty .env file
     ]},
-    cmd : '@elysiajs/cookie @elysiajs/cors @elysiajs/jwt @types/bcryptjs @types/busboy @types/mongoose @types/multer bcryptjs busboy dotenv elysia elysia-helmet elysia-rate-limit helmet mongoose multer sequelize-typescript @types/jsonwebtoken typescript bun bun-types @elysiajs/node'
+    cmd : '@elysiajs/cookie @elysiajs/cors @elysiajs/jwt @types/bcryptjs @types/busboy @types/mongoose @types/multer bcryptjs busboy dotenv elysia elysia-helmet elysia-rate-limit helmet mongoose multer sequelize-typescript @types/jsonwebtoken typescript @elysiajs/node'
 }

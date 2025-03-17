@@ -892,5 +892,5 @@ For more information, visit:
 If you encounter any issues, feel free to reach out at ashrafchauhan567@gmail.com or open an issue on GitHub.
             ` } // Empty .env file
     ]},
-    cmd : '@types/bcryptjs @types/config @types/cors body-parser typescript cors dotenv express jsonwebtoken multer @types/express @types/gravatar fs http-errors https @types/jsonwebtoken @types/mongoose @types/multer @types/node concurrently @types/http-errors http-errors bun bun-types @types/debug'
+    cmd : '@types/bcryptjs @types/config @types/cors body-parser typescript cors dotenv express jsonwebtoken multer @types/express @types/gravatar fs http-errors https @types/jsonwebtoken @types/mongoose @types/multer @types/node concurrently @types/http-errors http-errors @types/debug'
 }

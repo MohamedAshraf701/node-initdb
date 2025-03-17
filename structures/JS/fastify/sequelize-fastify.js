@@ -764,5 +764,5 @@ If you encounter any issues, feel free to reach out at ashrafchauhan567@gmail.co
 
         ` }
     ]},
-    cmd : '@fastify/formbody @fastify/cors @fastify/multipart @fastify/static dotenv fastify fastify-jwt fs @fastify/jwt sequelize mysql2 bun'
+    cmd : '@fastify/formbody @fastify/cors @fastify/multipart @fastify/static dotenv fastify fastify-jwt fs @fastify/jwt sequelize mysql2'
 }
