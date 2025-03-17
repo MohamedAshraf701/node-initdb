@@ -83,8 +83,8 @@ const askQuestion = (index, options, rl) => { // Recursive function to ask each 
       description: answers[2] || defaultValues[2],
       main: answers[3] || rootFilename,
       scripts: {
-        start: `${options.npm ? `node ${answers[3] || rootFilename}` : `bun run --watch ${answers[3] || rootFilename}`}`,
-        dev: `${options.npm ? `nodemon ${answers[3] || rootFilename}` : `bun run --watch ${answers[3] || rootFilename}`}`,
+        start: options.bun ? `bun run --watch ${answers[3] || rootFilename}` : `node ${answers[3] || rootFilename} ` ,
+        dev: options.bun ? `bun run --watch ${answers[3] || rootFilename}`  : `nodemon ${answers[3] || rootFilename} `,
         test: answers[4] || defaultValues[4]
       },
       repository: answers[5] ? { type: "git", url: answers[5] } : undefined,
@@ -159,22 +159,16 @@ const askQuestion = (index, options, rl) => { // Recursive function to ask each 
     exec(`${options.npm ? "npm install "+ cmd: options.yarn ? "yarn add " + cmd : options.pnpm ? "pnpm add " + cmd : "bun add "+ cmd}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error installing packages: ${error.message}`);
-            return;
+            process.exit(1);
         }
         if (stderr) {
             console.error(`stderr: ${stderr}`);
-            return;
-        }
+            process.exit(1);
+          }
         console.log(`Packages installed successfully: ${stdout}`);
+        process.exit(0); // Force process exit after installation completes
+
     }); // Close the readline interface
-
-    setTimeout(() => {
-      if (!process.stdin.destroyed) {
-        process.stdin.destroy();
-      }
-      process.exit(0);
-    }, 3000);
-
     return;
   }
   rl.question(questions[index], (answer) => { // Ask the next question

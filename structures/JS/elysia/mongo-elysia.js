@@ -815,8 +815,7 @@ JWT_SECRET=
 
                 {
                   folder: '', name: '.gitignore', content:
-                      `
-node_modules
+                      `node_modules
 package-lock.json
 .env
       ` 
@@ -871,7 +870,7 @@ Use the 'node-initdb' command to create the project. *You must select one option
   - TypeScript: '-t' or '--typescript'
 - *Package Manager:*
   - npm: '-n' or '--npm'
-  - yarn: '-yr' or '--yarn'
+  - yarn: '-ya' or '--yarn'
   - pnpm: '-pn' or '--pnpm'
   - bun: '-b' or '--bun'
 
@@ -880,7 +879,7 @@ Optionally, add '-y' or '--yes' to skip interactive prompts and use default valu
 For example, to set up a project with MongoDB, Express, TypeScript, and npm:
 
 bash
-node-initdb -m -e -t -n
+node-initdb -m -e -t
 
 
 ### Adding a Module
@@ -888,13 +887,13 @@ node-initdb -m -e -t -n
 To add a new module to your project, use the 'node-add' command with the same required options:
 
 bash
-node-add <moduleName> [-m / --mongo] [-s / --seque] [-e / --express] [-f / --fastify] [-el / --elysia] [-j / --javascript] [-t / --typescript] [-n / --npm] [-yr / --yarn] [-pn / --pnpm] [-b / --bun]
+node-add <moduleName> [-m / --mongo] [-s / --seque] [-e / --express] [-f / --fastify] [-el / --elysia] [-j / --javascript] [-t / --typescript] [-n / --npm] [-ya / --yarn] [-pn / --pnpm] [-b / --bun]
 
 
 For example, to add a "user" module for MongoDB, Express, TypeScript, and yarn:
 
 bash
-node-add user -m -e -t -yr
+node-add user -m -e -t 
 
 
 ## About node-initdb

@@ -39,7 +39,7 @@ Navigate to your project directory and run node-initdb with the appropriate opti
 - **Package Manager:**
   - Npm: `--npm` or `-n`
   - Bun: `--bun` or `-b`
-  - Yarn: `--yarn` or `-yr`
+  - Yarn: `--yarn` or `-ya`
   - Pnpm: `--pnpm` or `-pn`
 
 **Important:** All four categories (database, framework, language, and package manager) are required. If any one is missing, node-initdb will not run.
@@ -69,7 +69,7 @@ Optionally, you can add `--yes` (or `-y`) to skip interactive prompts and use de
   ```bash
   node-initdb --seque --elysia --javascript --yarn
   # or shorthand:
-  node-initdb -s -el -j -yr
+  node-initdb -s -el -j -ya
   ```
 
 ### Add Module Task
@@ -85,12 +85,12 @@ Replace `<moduleName>` with your desired module name. Use the same options for d
 - Database: `-m` / `--mongo`, `-s` / `--seque`
 - Framework: `-e` / `--express`, `-f` / `--fastify`, `-el` / `--elysia`
 - Language: `-j` / `--javascript`, `-t` / `--typescript`
-- Package Manager: `-n` / `--npm`, `-b` / `--bun`, `-yr` / `--yarn`, `-pn` / `--pnpm`
+- Package Manager: `-n` / `--npm`, `-b` / `--bun`, `-ya` / `--yarn`, `-pn` / `--pnpm`
 
 #### Example
 
 ```bash
-node-add "user" -m -e -t -n
+node-add "user" -m -e -t
 ```
 
 ## Folder Structure

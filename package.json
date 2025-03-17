@@ -1,6 +1,6 @@
 {
   "name": "node-initdb",
-  "version": "2.0.0-beta.13",
+  "version": "2.0.1-beta.5",
   "description": "A CLI tool to create a folder and file with some code",
   "main": "index.js",
   "bin": {
@@ -31,14 +31,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MohamedAshraf701/node-cli.git"
+    "url": "git+https://github.com/MohamedAshraf701/node-initdb.git"
   },
   "author": "ashraf.digital",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MohamedAshraf701/node-cli/issues"
+    "url": "https://github.com/MohamedAshraf701/node-initdb/issues"
   },
-  "homepage": "https://github.com/MohamedAshraf701/node-cli#readme",
+  "homepage": "https://github.com/MohamedAshraf701/node-initdb#readme",
   "dependencies": {
     "chalk": "^5.4.1",
     "child_process": "^1.0.2",
