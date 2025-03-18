@@ -7,6 +7,7 @@ const { loadEnvFile } = require("process");
 const { default: inquirer } = require("inquirer");
 const { default: chalk } = require("chalk");
 const figlet = require("figlet")
+const copyPaste = require('copy-paste');
 
 function capitalizeFirstChar(str) {
   if (!str) return str; // Return the string if it's empty or null
@@ -32,7 +33,7 @@ function printBanner() {
     console.log(
       chalk.magentaBright("Usage: ") +
       chalk.yellow("node-initdb ") +
-      chalk.white("-m <-m or --mongo | -s or --seque> -e <-e or --express | -f or --fastify | -el or --elysia> -j <-j or --javascript | -t or --typescript> -n <-n or --npm | -ya or --yarn | -b or --bun | -pn or --pnpm>") 
+      chalk.white("-m <-m or --mongo | -s or --seque> -e <-e or --express | -f or --fastify | -el or --elysia> -j <-j or --javascript | -t or --typescript> -n <-n or --npm | -ya or --yarn | -b or --bun | -pn or --pnpm>")
     );
     console.log();
     console.log(chalk.blue("Examples:"));
@@ -109,17 +110,17 @@ async function FrameWork(options) {
   }
 }
 
-async function getProjectName(name) {
+async function getModuleName(name) {
   if (!name) {
-    const { projectName } = await inquirer.prompt([
+    const { moduleName } = await inquirer.prompt([
       {
-        name: "projectName",
+        name: "moduleName",
         type: "input",
-        message: "Please enter your project name:",
-        validate: (input) => input.trim() !== "" || "Project name cannot be empty."
+        message: "Please enter your module name:",
+        validate: (input) => input.trim() !== "" || "Module name cannot be empty."
       }
     ]);
-    return projectName;
+    return moduleName;
   }
   return name;
 }
@@ -140,7 +141,7 @@ program
 
     setTimeout(async () => {
       // 'name' will be the first argument after the command
-      name = await getProjectName(name);
+      name = await getModuleName(name);
 
       const capitalizeAndValidateFilename = (str) => {
         // Validate input
@@ -275,7 +276,7 @@ program
 
       if (options.fastify) {
         if (options.javascript) {
-          console.log(`
+          let value = `
 Add This Code Into Your Project Main file 
 
 // Importing route 
@@ -283,10 +284,23 @@ const Routes${moduleName} = require("./Routes/${moduleName}.Route");
 
 // Registering route with API v1 router
 fastify.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
-                        
-          `);
+              
+          `;
+          console.log(value);
+
+          async function copyValuesToClipboard() {
+            copyPaste.copy(value);
+          }
+          copyValuesToClipboard()
+            .then(() => {
+              console.log('copied to clipboard.');
+            })
+            .catch(err => {
+              console.error('Error copying to clipboard:',err);
+            });
+
         } else {
-          console.log(`
+          let value = `
 Add This Code Into Your Project Main file 
 
 // Importing route 
@@ -294,13 +308,25 @@ import Routes${moduleName} from './Routes/${moduleName}.Route';
 
 // Registering route with API v1 router
 server.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
-  
-          `);
+              
+                    `;
+          console.log(value);
+
+          async function copyValuesToClipboard() {
+            copyPaste.copy(value);
+          }
+          copyValuesToClipboard()
+            .then(() => {
+              console.log('copied to clipboard.');
+            })
+            .catch(err => {
+              console.error('Error copying to clipboard:',err);
+            });
         }
       }
       else if (options.elysia) {
         if (options.javascript) {
-          console.log(`
+          let value = `
 Add This Code Into Your Project Main file 
 
 // Importing route 
@@ -308,10 +334,23 @@ import { ${moduleName}Routes } from "./Routes/${moduleName}.Route.js";
 
 // Registering route with API v1 router
 .group("/api/v1/${moduleName}", (app) => ${moduleName}Routes(app))
-                                    
-                `);
-        } else {
-          console.log(`
+              
+                    `;
+          console.log(value);
+
+          async function copyValuesToClipboard() {
+            copyPaste.copy(value);
+          }
+          copyValuesToClipboard()
+            .then(() => {
+              console.log('copied to clipboard.');
+            })
+            .catch(err => {
+              console.error('Error copying to clipboard:',err);
+            });
+
+        } else {       
+           let value = `
 Add This Code Into Your Project Main file 
 
 // Importing route 
@@ -319,14 +358,26 @@ import { ${moduleName}Routes } from "./Routes/${moduleName}.Route";
 
 // Registering route with API v1 router
 .group("/api/v1/${moduleName}", (app: any) => ${moduleName}Routes(app))
-                                    
-           `);
+              
+                    `;
+          console.log(value);
+
+          async function copyValuesToClipboard() {
+            copyPaste.copy(value);
+          }
+          copyValuesToClipboard()
+            .then(() => {
+              console.log('copied to clipboard.');
+            })
+            .catch(err => {
+              console.error('Error copying to clipboard:',err);
+            });
         }
       }
       else {
         // Execute command to install required packages
         if (options.javascript) {
-          console.log(`
+          let value = `
 Add This Code Into Your Project Main file 
 
 // Importing route 
@@ -334,10 +385,22 @@ const Routes${moduleName} = require("./Routes/${moduleName}.Route");
 
 // Registering route with API v1 router
 apiV1Router.use("/${moduleName}", Routes${moduleName});
-                        
-          `);
+              
+                    `;
+          console.log(value);
+
+          async function copyValuesToClipboard() {
+            copyPaste.copy(value);
+          }
+          copyValuesToClipboard()
+            .then(() => {
+              console.log('copied to clipboard.');
+            })
+            .catch(err => {
+              console.error('Error copying to clipboard:',err);
+            });
         } else {
-          console.log(`
+          let value = `
 Add This Code Into Your Project Main file 
 
 // Importing route 
@@ -345,8 +408,20 @@ import Router${moduleName} from './Routes/${moduleName}.Route'
 
 // Registering route with API v1 router
 apiV1Router.use("/${moduleName}", Router${moduleName});
-  
-          `);
+              
+                    `;
+          console.log(value);
+
+          async function copyValuesToClipboard() {
+            copyPaste.copy(value);
+          }
+          copyValuesToClipboard()
+            .then(() => {
+              console.log('copied to clipboard.');
+            })
+            .catch(err => {
+              console.error('Error copying to clipboard:',err);
+            });
         }
       }
     }, 200);
