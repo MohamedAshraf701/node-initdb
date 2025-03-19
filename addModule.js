@@ -277,7 +277,7 @@ program
       if (options.fastify) {
         if (options.javascript) {
           let value = `
-Add This Code Into Your Project Main file 
+//Add This Code Into Your Project Main file 
 
 // Importing route 
 const Routes${moduleName} = require("./Routes/${moduleName}.Route");
@@ -301,7 +301,7 @@ fastify.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
 
         } else {
           let value = `
-Add This Code Into Your Project Main file 
+//Add This Code Into Your Project Main file 
 
 // Importing route 
 import Routes${moduleName} from './Routes/${moduleName}.Route';
@@ -327,7 +327,7 @@ server.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
       else if (options.elysia) {
         if (options.javascript) {
           let value = `
-Add This Code Into Your Project Main file 
+//Add This Code Into Your Project Main file 
 
 // Importing route 
 import { ${moduleName}Routes } from "./Routes/${moduleName}.Route.js";
@@ -351,7 +351,7 @@ import { ${moduleName}Routes } from "./Routes/${moduleName}.Route.js";
 
         } else {       
            let value = `
-Add This Code Into Your Project Main file 
+//Add This Code Into Your Project Main file 
 
 // Importing route 
 import { ${moduleName}Routes } from "./Routes/${moduleName}.Route";
@@ -378,7 +378,7 @@ import { ${moduleName}Routes } from "./Routes/${moduleName}.Route";
         // Execute command to install required packages
         if (options.javascript) {
           let value = `
-Add This Code Into Your Project Main file 
+//Add This Code Into Your Project Main file 
 
 // Importing route 
 const Routes${moduleName} = require("./Routes/${moduleName}.Route");
@@ -401,7 +401,7 @@ apiV1Router.use("/${moduleName}", Routes${moduleName});
             });
         } else {
           let value = `
-Add This Code Into Your Project Main file 
+//Add This Code Into Your Project Main file 
 
 // Importing route 
 import Router${moduleName} from './Routes/${moduleName}.Route'
