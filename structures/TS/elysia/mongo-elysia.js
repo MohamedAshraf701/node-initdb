@@ -621,7 +621,7 @@ const KEYPATH = process.env.KEYPATH;
  * - Configures routes for user authentication and health checks.
  * - Starts the server on the specified port.
 */
-const app = new Elysia()
+const app = new Elysia({adapter: node()})
  
   // Apply rate limiting to prevent excessive requests
   .use(rateLimit())

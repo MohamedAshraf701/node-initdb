@@ -675,7 +675,7 @@ DB_PASS=
 IS_HTTPS=false
 KEYPATH=
 CARTPATH=
-JWT_SECRET=RadheKrishna
+JWT_SECRET=
 ` }, // Empty .env file
   {
     folder: '', name: '.gitignore', content:

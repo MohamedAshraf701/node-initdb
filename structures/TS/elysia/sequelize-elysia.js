@@ -638,11 +638,12 @@ import jwt from "@elysiajs/jwt";
 import ResponseHandler from "./Utils/responseHandler";
 import { Codes, Messages } from "./Utils/httpCodesAndMessages";
 import { readFileSync } from 'node:fs'; 
-import {connectDB} from "./config/dbConfig.js"; // Importing DB connection function
+import { node } from "@elysiajs/node";
+import {connectDB} from "./config/dbConfig"; // Importing DB connection function
 connectDB(); // Connecting to the database
  
 // Model initialization
-import  initModels  from "./config/initModels.js"; // Importing model initialization function
+import  initModels  from "./config/initModels"; // Importing model initialization function
 initModels(); // Initializing models
 // Initialize MongoDB connection
 // mongoDBConnection();
@@ -667,7 +668,7 @@ const KEYPATH = process.env.KEYPATH;
  * - Configures routes for user authentication and health checks.
  * - Starts the server on the specified port.
 */
-const app = new Elysia()
+const app = new Elysia({adapter: node()})
  
   // Apply rate limiting to prevent excessive requests
   .use(rateLimit())
