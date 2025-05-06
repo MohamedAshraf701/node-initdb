@@ -62,6 +62,20 @@ async function healthRoutes(fastify: FastifyInstance) {
 export default healthRoutes;                
             
 ` },
+{
+  folder: 'Routes',
+  name: 'index.Route.ts',
+  content:
+      `
+import { FastifyInstance } from 'fastify';
+import RoutesHealth from './health.Route';
+
+export default async function registerRoutes(server: FastifyInstance) {
+
+    server.register(RoutesHealth, { prefix: '/api/v1/health' });
+
+}  
+` },
                 {
                     folder: 'Middleware', name: 'fileUpload.ts',
                     content:
@@ -718,11 +732,7 @@ server.register(fastifyStatic, {
   prefix: '/api/v1/uploads/',
 });
 
-
-// Import routes
-import RoutesHealth from './Routes/health.Route';
-// Register routes
-server.register(RoutesHealth, { prefix: '/api/v1/health' });
+registerRoutes(server);
 
 // Set up error handler for not found routes
 server.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {

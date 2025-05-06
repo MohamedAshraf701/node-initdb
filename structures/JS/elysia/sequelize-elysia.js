@@ -41,6 +41,18 @@ export const healthRoutes = (app) => {
 };                             
                 ` },
                 {
+                  folder: 'Routes',
+                  name: 'index.Route.js',
+                  content:
+                      `
+import { healthRoutes } from './health.Route.js';
+
+export const registerRoutes = (app) =>
+    app
+      .group("/api/v1/health", (app) => healthRoutes(app))
+                   
+            ` },
+                {
                     folder: 'Middleware', name: 'fileUpload.js',
                     content:
                         `
@@ -545,6 +557,7 @@ import ResponseHandler from "./Utils/responseHandler.js";
 import { Codes, Messages } from "./Utils/httpCodesAndMessages.js";
 import fs from 'fs'; // Importing file system module for file operations
 import { healthRoutes } from "./Routes/health.Route.js";
+import { registerRoutes } from "./Routes/index.Route.js"; // Importing the function to register routes
 
 // Database initialization
 import { connectDB } from "./config/dbConfig.js"; // Importing DB connection function
@@ -592,8 +605,7 @@ const app = new Elysia({ adapter: node() })
         }
         })
   
-    //endpoint for healthRoutes
-    .group("/api/v1", (app) => healthRoutes(app))
+  registerRoutes(app);
 
   const startServer = async () => {
     try {

@@ -52,6 +52,19 @@ router.get("/" ,HealthController.Health);
 export default router;                
                 ` },
                 {
+                  folder: 'Routes',
+                  name: 'index.Route.ts',
+                  content:
+                      `   
+import express from "express";
+const apiV1Router = express.Router();
+
+import RouterHealth from "./Health.Route";
+apiV1Router.use("/Health", RouterHealth); // Mounting Health router at '/Health'
+
+export default apiV1Router; // Exporting the API v1 router for use in other modules
+            ` },
+                {
                     folder: 'Middleware', name: 'fileUpload.ts',
                     content:
                         `
@@ -663,6 +676,7 @@ import { connectDB } from "./config/dbConfig";
 import { initModels } from "./config/initModels";
 import fs from 'fs'
 import createHttpError from "http-errors";
+import apiV1Router from "./Routes/index.Route"; // Importing API v1 router
 
 const app = express();
 
@@ -672,8 +686,6 @@ app.use(cors()); // Using CORS middleware in the app
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-const apiV1Router = express.Router(); // Creating a new router for API version 1
 
 // Database initialization
 connectDB(); // Connecting to the database
@@ -690,12 +702,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 apiV1Router.use('/uploads', express.static('uploads')); // Serving static files from 'uploads' directory
-
-// Importing route for health checks
-import RouterHealth from './Routes/health.Route'
-
-// Registering health check route with API v1 router
-apiV1Router.use("/health", RouterHealth);
 
 // Middleware to handle 404 Not Found error for API v1 routes
 apiV1Router.use((req, res, next) => {

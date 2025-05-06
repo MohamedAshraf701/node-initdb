@@ -45,6 +45,20 @@ router.get("/" ,HealthController.Health);
 // Exporting the router instance to be used in other parts of the application
 module.exports = router;
                 ` },
+                {
+                  folder: 'Routes',
+                  name: 'index.Route.js',
+                  content:
+                      `
+const express = require("express");
+const apiV1Router = express.Router(); // Creating a new router for API version 1
+
+const RoutesHealth = require("./Health.Route");
+
+apiV1Router.use("/Health", RoutesHealth);
+
+module.exports = apiV1Router;         
+            ` },
         {
             folder: 'Models',
             name: 'example.Model.js',
@@ -492,18 +506,23 @@ module.exports = ResponseHandler;
                 `
 const express = require("express"); // Importing express module for server operations
 const createError = require("http-errors"); // Importing module to create HTTP errors
-const dotenv = require("dotenv").config(); // Loading environment variables from .env file
+const dotenv = require("dotenv") // Importing dotenv to load environment variables
 const cors = require('cors'); // Importing CORS middleware to enable cross-origin requests
 const bodyParser = require("body-parser"); // Importing body-parser middleware to parse request bodies
 const app = express(); // Creating an instance of express
-
+const path = require('path'); // Importing path module for handling file paths
 const fs = require('fs'); // Importing file system module for file operations
+
 app.use(cors()); // Using CORS middleware in the app
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
 app.use(bodyParser.json()); // Middleware to parse JSON bodies using body-parser
 
-const apiV1Router = express.Router(); // Creating a new router for API version 1
+const apiV1Router = require("./Routes/index.Route"); // Creating a new router for API version 1
+app.use("/api/v1" , apiV1Router); // Mounting API v1 router at '/api/v1'
+
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: path.resolve(__dirname, envFile) });
 
 // Initialize DB
 require("./config/dbConfig")(); // Importing and executing the database configuration
@@ -517,12 +536,6 @@ app.use((req, res, next) => {
 });
 
 apiV1Router.use('/uploads', express.static('uploads')); // Serving static files from 'uploads' directory
-
-// Importing route for health checks
-const RoutesHealth = require("./Routes/health.Route");
-
-// Registering health check route with API v1 router
-apiV1Router.use("/health", RoutesHealth);
 
 // Middleware to handle 404 Not Found error for API v1 routes
 apiV1Router.use((req, res, next) => {
@@ -539,8 +552,6 @@ apiV1Router.use((err, req, res, next) => {
         },
     });
 });
-
-app.use("/api/v1" , apiV1Router); // Mounting API v1 router at '/api/v1'
 
 const http = require("https"); // Importing HTTPS module
 const PORT = process.env.PORT || 8096; // Setting port from environment variable or default to 8096
@@ -656,7 +667,7 @@ module.exports = upload; // Export configured multer instance
 
                 ` },
                 {
-                  folder: '', name: '.env', content:
+                  folder: '', name: '.env.development', content:
                       `PORT=3000
 MONGODB_URI=mongodb://localhost:27017/
 DB_NAME=test
@@ -665,7 +676,20 @@ DB_PASS=
 IS_HTTPS=false
 KEYPATH=
 CARTPATH=
-JWT_SECRET=` } ,
+JWT_SECRET=
+NODE_ENV=development ` } ,
+                {
+                  folder: '', name: '.env.production', content:
+                      `PORT=3000
+MONGODB_URI=mongodb://localhost:27017/
+DB_NAME=test
+DB_USER=
+DB_PASS=
+IS_HTTPS=false
+KEYPATH=
+CARTPATH=
+JWT_SECRET=
+NODE_ENV=production ` } ,
 {
   folder: '', name: '.gitignore', content:
       `node_modules

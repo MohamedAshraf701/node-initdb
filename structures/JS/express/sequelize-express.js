@@ -46,6 +46,20 @@ router.get("/" ,HealthController.Health);
 module.exports = router;
                 ` },
                 {
+                    folder: 'Routes',
+                    name: 'index.Route.js',
+                    content:
+                        `
+const express = require("express");
+const apiV1Router = express.Router(); // Creating a new router for API version 1
+
+const RoutesHealth = require("./Health.Route");
+
+apiV1Router.use("/Health", RoutesHealth);
+
+module.exports = apiV1Router;         
+              ` },
+                {
                     folder: 'Middleware', name: 'fileUpload.js',
                     content:
                         `
@@ -538,7 +552,8 @@ app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
 app.use(bodyParser.json()); // Middleware to parse JSON bodies (redundant with express.json())
 
-const apiV1Router = express.Router(); // Creating a new router for API version 1
+const apiV1Router = require("./Routes/index.Route"); // Creating a new router for API version 1
+app.use("/api/v1" , apiV1Router); // Mounting the API v1 router at '/api/v1'
 
 // Database initialization
 const { connectDB } = require("./config/dbConfig"); // Importing DB connection function
@@ -556,12 +571,8 @@ app.use((req, res, next) => {
   next(); // Passing control to the next middleware function
 });
 
-// Route files
-const RoutesHealth = require("./Routes/health.Route"); // Importing health check routes
-
 // API V1 Routes
 apiV1Router.use('/uploads', express.static('uploads')); // Serving static files from the uploads directory
-apiV1Router.use("/health", RoutesHealth); // Using health routes in the API
 
 // Middleware to handle 404 Not Found error for API v1 routes
 apiV1Router.use((req, res, next) => {
@@ -578,8 +589,6 @@ apiV1Router.use((err, req, res, next) => {
         },
     }); // Sending a JSON response with the error details
 });
-
-app.use("/api/v1" , apiV1Router); // Mounting the API v1 router at '/api/v1'
 
 const http = require("https"); // HTTPS module
 const PORT = process.env.PORT || 8096; // Port number from environment variable or default to 8096

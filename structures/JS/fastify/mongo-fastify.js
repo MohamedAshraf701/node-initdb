@@ -58,6 +58,20 @@ async function routes(fastify, options) {
 module.exports = routes;
 
                 ` },
+                {
+                  folder: 'Routes',
+                  name: 'index.Route.js',
+                  content:
+                      `
+const RoutesHealth = require("./health.Route");
+
+async function routes(fastify, options) {
+  // Register each route with its prefix
+  fastify.register(RoutesHealth, { prefix: "/api/v1/health" });
+}
+
+module.exports = routes;      
+            ` },
         {
             folder: 'Models',
             name: 'example.Model.js',
@@ -533,9 +547,7 @@ fastify.register(require('@fastify/static'), {
   prefix: '/api/v1/uploads/'
 });
 
-// Registering routes for health checks
-const RoutesHealth = require("./Routes/health.Route");
-fastify.register(RoutesHealth ,{prefix : "/api/v1/health"});
+fastify.register(require("./Routes/index.Route")); // This auto-registers everything inside Routes/index.js
 
 // Setting up error handler for not found routes
 fastify.setNotFoundHandler((request, reply) => {

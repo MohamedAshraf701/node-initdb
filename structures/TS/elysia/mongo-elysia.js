@@ -62,6 +62,20 @@ export const healthRoutes = (app: Elysia): any=> {
              
       ` },
         {
+            folder: 'Routes',
+            name: 'index.Route.ts',
+            content:
+                `
+import { Elysia } from "elysia";
+import { healthRoutes } from "./health.Route";
+
+export const registerRoutes = (app: Elysia): Elysia  => {
+  return app
+  .group("/api/v1/health", (group) => group.use(healthRoutes))
+
+};
+      ` },
+        {
             folder: 'Models',
             name: 'example.Model.ts',
             content:
@@ -597,6 +611,7 @@ import ResponseHandler from "./Utils/responseHandler";
 import { Codes, Messages } from "./Utils/httpCodesAndMessages";
 import { readFileSync } from 'node:fs'; 
 import { node } from '@elysiajs/node'
+import { registerRoutes } from "./Routes/index.Route"; // Importing the function to register routes
 
 // Initialize MongoDB connection
 mongoDBConnection();
@@ -624,8 +639,15 @@ const KEYPATH = process.env.KEYPATH;
 const app = new Elysia({adapter: node()})
  
   // Apply rate limiting to prevent excessive requests
-  .use(rateLimit())
-  
+  .use(
+    rateLimit({
+      generator: (request) => {
+        // Try to retrieve the IP from headers or the request object.
+        // You might use "x-forwarded-for" if behind a proxy, or a property like "request.ip" if available.
+        return request.headers.get("x-forwarded-for") || "unknown";
+      }
+    })
+  )
   // Secure the application by adding various HTTP headers
   .use(helmet())
   
@@ -654,9 +676,8 @@ const app = new Elysia({adapter: node()})
       }
       })
 
-  //endpoint for healthRoutes
-  .group("/api/v1", (app: any) => healthRoutes(app))
-  
+  .use(registerRoutes) // <-- wrap registerRoutes in a plugin style
+
   const startServer = async () => {
     try {
       const options = {

@@ -277,14 +277,14 @@ program
       if (options.fastify) {
         if (options.javascript) {
           let value = `
-//Add This Code Into Your Project Main file 
+// Add This Code Into index.Route file into Route folder
 
 // Importing route 
-const Routes${moduleName} = require("./Routes/${moduleName}.Route");
+const Routes${moduleName} = require("./${moduleName}.Route");
 
 // Registering route with API v1 router
-fastify.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
-              
+fastify.register(Routes${moduleName}, { prefix: "/api/v1/${moduleName}" });
+
           `;
           console.log(value);
 
@@ -301,14 +301,14 @@ fastify.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
 
         } else {
           let value = `
-//Add This Code Into Your Project Main file 
+// Add This Code Into index.Route file into Route folder
 
 // Importing route 
-import Routes${moduleName} from './Routes/${moduleName}.Route';
+import RoutesH${moduleName} from './${moduleName}.Route';
 
 // Registering route with API v1 router
-server.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
-              
+server.register(Routes${moduleName}, { prefix: '/api/v1/${moduleName}' });
+
                     `;
           console.log(value);
 
@@ -327,14 +327,14 @@ server.register(Routes${moduleName} ,{prefix : "/api/v1/${moduleName}"});
       else if (options.elysia) {
         if (options.javascript) {
           let value = `
-//Add This Code Into Your Project Main file 
+// Add This Code Into index.Route file into Route folder
 
 // Importing route 
-import { ${moduleName}Routes } from "./Routes/${moduleName}.Route.js";
+import { ${moduleName}Routes } from './${moduleName}.Route.js';
 
 // Registering route with API v1 router
 .group("/api/v1/${moduleName}", (app) => ${moduleName}Routes(app))
-              
+
                     `;
           console.log(value);
 
@@ -351,14 +351,14 @@ import { ${moduleName}Routes } from "./Routes/${moduleName}.Route.js";
 
         } else {       
            let value = `
-//Add This Code Into Your Project Main file 
+// Add This Code Into index.Route file into Route folder
 
 // Importing route 
-import { ${moduleName}Routes } from "./Routes/${moduleName}.Route";
+import { h${moduleName}Routes } from "./${moduleName}.Route";
 
 // Registering route with API v1 router
-.group("/api/v1/${moduleName}", (app: any) => ${moduleName}Routes(app))
-              
+.group("/api/v1/${moduleName}", (group) => group.use(${moduleName}Routes))
+
                     `;
           console.log(value);
 
@@ -378,10 +378,10 @@ import { ${moduleName}Routes } from "./Routes/${moduleName}.Route";
         // Execute command to install required packages
         if (options.javascript) {
           let value = `
-//Add This Code Into Your Project Main file 
+// Add This Code Into index.Route file into Route folder
 
 // Importing route 
-const Routes${moduleName} = require("./Routes/${moduleName}.Route");
+const Routes${moduleName} = require("./${moduleName}.Route");
 
 // Registering route with API v1 router
 apiV1Router.use("/${moduleName}", Routes${moduleName});
@@ -401,13 +401,13 @@ apiV1Router.use("/${moduleName}", Routes${moduleName});
             });
         } else {
           let value = `
-//Add This Code Into Your Project Main file 
+// Add This Code Into index.Route file into Route folder
 
 // Importing route 
-import Router${moduleName} from './Routes/${moduleName}.Route'
+import Router${moduleName} from "./${moduleName}.Route";
 
 // Registering route with API v1 router
-apiV1Router.use("/${moduleName}", Router${moduleName});
+apiV1Router.use("/${moduleName}", Router${moduleName}); // Mounting Health router at '/Health'
               
                     `;
           console.log(value);

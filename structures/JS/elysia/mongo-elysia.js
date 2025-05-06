@@ -84,6 +84,18 @@ export const healthRoutes = (app) => {
     return app.get("/health", healthController.getHealth);
 };                       
       ` },
+      {
+        folder: 'Routes',
+        name: 'index.Route.js',
+        content:
+            `
+import { healthRoutes } from './health.Route.js';
+
+export const registerRoutes = (app) =>
+    app
+      .group("/api/v1/health", (app) => healthRoutes(app))
+
+  ` },
         {
             folder: 'Models',
             name: 'example.Model.js',
@@ -630,6 +642,7 @@ import { Codes, Messages } from "./Utils/httpCodesAndMessages.js";
 import fs from 'fs'; // Importing file system module for file operations
 import { healthRoutes } from "./Routes/health.Route.js";
 import  dbConfig  from "./config/dbConfig.js";
+import { registerRoutes } from "./Routes/index.Route.js"; // Importing the function to register routes
 
 dbConfig();
 config();
@@ -671,8 +684,7 @@ const app = new Elysia({ adapter: node() })
         }
         })
   
-    //endpoint for healthRoutes
-    .group("/api/v1", (app) => healthRoutes(app))
+  registerRoutes(app);
 
   const startServer = async () => {
       try {
