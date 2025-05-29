@@ -43,7 +43,7 @@ import express from 'express'
 const router = express.Router();
 
 // Importing the HealthController from the Controllers directory
-import HealthController from '../Controllers/Health.Controller';
+import HealthController from '../Controllers/health.Controller';
 
 // Defining a GET route on the root path which uses the Health method from HealthController to handle requests
 router.get("/" ,HealthController.Health);
