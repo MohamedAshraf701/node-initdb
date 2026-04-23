@@ -115,7 +115,7 @@ node-initdb creates essential files such as controllers, routes, models, configu
 
 ## File Compression
 
-node-initdb includes an Express middleware (`compressIfLarge`) that automatically compresses uploaded files exceeding a size threshold. It is attached after the multer middleware and handles three categories of files differently.
+node-initdb includes an Express middleware that automatically compresses uploaded files exceeding a size threshold. It is attached after the multer middleware and handles three categories of files differently.
 
 ### Images
 
