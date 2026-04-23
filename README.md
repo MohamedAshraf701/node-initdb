@@ -1,4 +1,3 @@
-
 <div align="left">
   <img src="https://github.com/user-attachments/assets/fb911b79-9749-4edb-8aea-594262ef4365" height="70" width="70" alt="ashraf704" align="left" style="vertical-align: middle; margin-right: 10px;" />
   <h3>node-initdb</h3>
@@ -7,7 +6,7 @@
 
 ---
 
-node-initdb is a CLI tool for initializing project configurations and structures in Node.js projects. **It now requires you to select a database, a web framework, a language (JavaScript or TypeScript), and a package manager for the tool to work.** In addition to setting up your chosen database and framework, node-initdb now supports file upload functionality and JWT-based authentication.
+node-initdb is a CLI tool for initializing project configurations and structures in Node.js projects. **It now requires you to select a database, a web framework, a language (JavaScript or TypeScript), and a package manager for the tool to work.** In addition to setting up your chosen database and framework, node-initdb now supports file upload functionality with automatic compression and JWT-based authentication.
 
 ![Node InitDB Plugin Demo](https://github.com/user-attachments/assets/997d5cfc-5187-49e9-8c5b-713d5ea9d9cb)
 
@@ -111,8 +110,73 @@ After running node-initdb, your project will have the following structure:
 
 node-initdb creates essential files such as controllers, routes, models, configuration files, and middleware. In addition, the setup includes:
 
-- **File Upload:** Pre-configured file upload functionality.
+- **File Upload:** Pre-configured file upload functionality with automatic compression.
 - **JWT Authentication:** Setup for JWT-based authentication.
+
+## File Compression
+
+node-initdb includes an Express middleware (`compressIfLarge`) that automatically compresses uploaded files exceeding a size threshold. It is attached after the multer middleware and handles three categories of files differently.
+
+### Images
+
+Supported formats: `jpg`, `jpeg`, `png`, `webp`, `tiff`
+
+Images larger than **5MB** are compressed using the [`sharp`](https://sharp.pixelplumbing.com/) library. The image is re-encoded at 80% quality with maximum compression effort. The original file is only replaced if the compressed version is actually smaller.
+
+### Videos
+
+Supported formats: `mp4`, `mov`, `avi`, `mkv`, `webm`, `flv`, `wmv`, `m4v`
+
+Videos larger than **100MB** are compressed using [`fluent-ffmpeg`](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg), which re-encodes the video to H.264/AAC in an MP4 container. The output uses CRF-based quality control (`crf: 28` by default) and is optimized for streaming with `-movflags +faststart`.
+
+You can tune compression per-request by setting `req.videoCompressOptions` before the middleware runs:
+
+```js
+req.videoCompressOptions = {
+  crf: 26,           // Lower = better quality, larger file (range: 0–51)
+  preset: 'fast',    // Encoding speed: ultrafast, superfast, fast, medium, slow, etc.
+  resolution: '1280x720' // Optional: downscale output resolution
+};
+```
+
+> **Important:** Video compression is CPU-intensive and can take anywhere from 30 seconds to several minutes depending on file size and server hardware. It is strongly recommended to handle video compression asynchronously — respond to the client immediately with a job ID and process the video in the background using a job queue like [BullMQ](https://docs.bullmq.io/).
+
+#### FFmpeg Installation (Required for Video Compression)
+
+`fluent-ffmpeg` is a Node.js wrapper and requires **FFmpeg to be installed on your system**.
+
+**Ubuntu / Debian:**
+```bash
+sudo apt update && sudo apt install ffmpeg
+```
+
+**macOS:**
+```bash
+brew install ffmpeg
+```
+
+**Windows:**
+
+Download the latest build from [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html) and add the `bin/` folder to your system `PATH`.
+
+**Verify installation:**
+```bash
+ffmpeg -version
+```
+
+If FFmpeg is not installed or not on `PATH`, video compression will fail with an error. Image and other file compression will continue to work normally.
+
+### Other Files
+
+Any non-image, non-video file exceeding **5MB** is compressed into a `.zip` archive using [`archiver`](https://www.archiverjs.com/) at maximum zlib compression level. Note that files that are already compressed internally (e.g. `.mp4`, `.zip`) will see little to no size reduction.
+
+### Size Thresholds
+
+| File Type | Threshold |
+|-----------|-----------|
+| Images    | 5 MB      |
+| Videos    | 100 MB    |
+| Others    | 5 MB      |
 
 ## Dependencies
 
@@ -125,9 +189,12 @@ Depending on your chosen configuration, node-initdb installs the following depen
   - **Express:** `express`
   - **Fastify:** `fastify`
   - **Elysia:** `elysia`
-- **New Features:**
-  - **File Upload:** `multer`
-  - **JWT Authentication:** `jsonwebtoken`
+- **File Upload & Compression:**
+  - `multer` — handles multipart file uploads
+  - `sharp` — image compression
+  - `fluent-ffmpeg` — video compression (requires FFmpeg installed on system)
+  - `archiver` — zip compression for other file types
+- **JWT Authentication:** `jsonwebtoken`
 
 ## Contributing
 
@@ -153,4 +220,3 @@ If you find node-initdb useful, please consider supporting the project:
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="ashraf704" />
   </a>
 </p>
-

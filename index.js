@@ -26,7 +26,7 @@ function printBanner() {
     console.log(
       chalk.magentaBright("Usage: ") +
       chalk.yellow("node-initdb ") +
-      chalk.white("-m <-m or --mongo | -s or --seque> -e <-e or --express | -f or --fastify | -el or --elysia> -j <-j or --javascript | -t or --typescript> -n <-n or --npm | -ya or --yarn | -b or --bun | -pn or --pnpm>") 
+      chalk.white("-m <-m or --mongo | -s or --seque> -e <-e or --express | -f or --fastify | -el or --elysia> -j <-j or --javascript | -t or --typescript> -n <-n or --npm | -ya or --yarn | -b or --bun | -pn or --pnpm>")
     );
     console.log();
     console.log(chalk.blue("Examples:"));
@@ -140,6 +140,20 @@ async function askDefaultStructure(options) {
   }
 }
 
+async function Compression(options) {
+  if (options.compression === undefined) {
+    const { compress } = await inquirer.prompt([
+      {
+        name: "compress",
+        type: "confirm",
+        message: "Do you want to include file compression middleware?",
+        default: false
+      }
+    ]);
+    options.compression = compress;
+  }
+}
+
 // Setting up the CLI tool with commander
 program
   .version('1.0.0')
@@ -147,6 +161,7 @@ program
   .option('-m, --mongo', 'SetUp Initializing For MongoDB')
   .option('-s, --seque', 'SetUp Initializing For Sequelize')
   .option('-y, --yes', 'Create default structure')
+  .option('-c, --compression', 'Include file compression middleware')
   .option('-e, --express', 'SetUp Initializing For express js')
   .option('-f, --fastify', 'SetUp Initializing For fastify js')
   .option('-el, --elysia', 'SetUp Initializing For elysia js')
@@ -170,6 +185,7 @@ program
       await DB(options);
       await FrameWork(options);
       await selectPackageManager(options);
+      await Compression(options);
 
       if (options.express && options.fastify && options.elysia) {
         console.error('Please choose only one option: either --express or --fastify or --elysia, not all.');
@@ -205,4 +221,3 @@ program
 
 // Parse command line arguments
 program.parse(process.argv);
-
