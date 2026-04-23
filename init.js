@@ -76,15 +76,15 @@ const validateAnswer = (index, answer) => { // Function to validate user input b
 
 const askQuestion = (index, options, rl) => { // Recursive function to ask each question to the user
   if (index >= questions.length) { // Check if all questions have been asked
-    let rootFilename = options.javascript  ? defaultValues[3] : defaultValues[9]
+    let rootFilename = options.javascript ? defaultValues[3] : defaultValues[9]
     const packageJson = { // Object to store the package.json data
       name: answers[0] || defaultValues[0],
       version: answers[1] || defaultValues[1],
       description: answers[2] || defaultValues[2],
       main: answers[3] || rootFilename,
       scripts: {
-        start: options.bun ? `bun run --watch ${answers[3] || rootFilename}` : `node ${answers[3] || rootFilename} ` ,
-        dev: options.bun ? `bun run --watch ${answers[3] || rootFilename}`  : `nodemon ${answers[3] || rootFilename} `,
+        start: options.bun ? `bun run --watch ${answers[3] || rootFilename}` : `node ${answers[3] || rootFilename} `,
+        dev: options.bun ? `bun run --watch ${answers[3] || rootFilename}` : `nodemon ${answers[3] || rootFilename} `,
         test: answers[4] || defaultValues[4]
       },
       repository: answers[5] ? { type: "git", url: answers[5] } : undefined,
@@ -99,74 +99,88 @@ const askQuestion = (index, options, rl) => { // Recursive function to ask each 
 
     let Mongo;
     let Seque;
-     // Determine which database setup to initialize based on user input
-     if(options.fastify){
-        if(options.javascript){
-          Mongo = require('./structures/JS/fastify/mongo-fastify'); // MongoDB structure configuration
-          Seque = require('./structures/JS/fastify/sequelize-fastify'); // Sequelize structure configuration
-        }else{
-          Mongo = require('./structures/TS/fastify/mongo-fastify'); // MongoDB structure configuration
-          Seque = require('./structures/TS/fastify/sequelize-fastify'); // Sequelize structure configuration
-        }
-     } 
-     else if(options.elysia){
-      if(options.javascript){
+    // Determine which database setup to initialize based on user input
+    if (options.fastify) {
+      if (options.javascript) {
+        Mongo = require('./structures/JS/fastify/mongo-fastify'); // MongoDB structure configuration
+        Seque = require('./structures/JS/fastify/sequelize-fastify'); // Sequelize structure configuration
+      } else {
+        Mongo = require('./structures/TS/fastify/mongo-fastify'); // MongoDB structure configuration
+        Seque = require('./structures/TS/fastify/sequelize-fastify'); // Sequelize structure configuration
+      }
+    }
+    else if (options.elysia) {
+      if (options.javascript) {
         Mongo = require('./structures/JS/elysia/mongo-elysia'); // MongoDB structure configuration
         Seque = require('./structures/JS/elysia/sequelize-elysia'); // Sequelize structure configuration
-      }else{
+      } else {
         Mongo = require('./structures/TS/elysia/mongo-elysia'); // MongoDB structure configuration
         Seque = require('./structures/TS/elysia/sequelize-elysia'); // Sequelize structure configuration
       }
     }
     else {
-        if(options.javascript){
-          Mongo = require('./structures/JS/express/mongo-express'); // MongoDB structure configuration
-          Seque = require('./structures/JS/express/sequelize-express'); // Sequelize structure configuration
-        }
-        else{
-          Mongo = require('./structures/TS/express/mongo-express'); // MongoDB structure configuration
-          Seque = require('./structures/TS/express/sequelize-express'); // Sequelize structure configuration
-        }
-     }
-     if(options.seque){
-        folders = Seque.folders; // Folders from Sequelize configuration
-        files = Seque.files(answers[3] ||rootFilename,answers[0] || defaultValues[0]); // Files from Sequelize configuration
-        cmd = Seque.cmd; // Command to execute from Sequelize configuration
-    } else if(options.mongo) {
-        folders = Mongo.folders; // Folders from MongoDB configuration
-        files = Mongo.files(answers[3] || rootFilename,answers[0] || defaultValues[0]); // Files from MongoDB configuration
-        cmd = Mongo.cmd; // Command to execute from MongoDB configuration
+      if (options.javascript) {
+        Mongo = require('./structures/JS/express/mongo-express'); // MongoDB structure configuration
+        Seque = require('./structures/JS/express/sequelize-express'); // Sequelize structure configuration
+      }
+      else {
+        Mongo = require('./structures/TS/express/mongo-express'); // MongoDB structure configuration
+        Seque = require('./structures/TS/express/sequelize-express'); // Sequelize structure configuration
+      }
+    }
+    if (options.seque) {
+      folders = Seque.folders; // Folders from Sequelize configuration
+      files = Seque.files(answers[3] || rootFilename, answers[0] || defaultValues[0]); // Files from Sequelize configuration
+      cmd = Seque.cmd; // Command to execute from Sequelize configuration
+    } else if (options.mongo) {
+      folders = Mongo.folders; // Folders from MongoDB configuration
+      files = Mongo.files(answers[3] || rootFilename, answers[0] || defaultValues[0]); // Files from MongoDB configuration
+      cmd = Mongo.cmd; // Command to execute from MongoDB configuration
     } else {
-        console.log('Please choose one of the following options: --mongo or --seque');
-        process.exit(1); // Exit if no valid option is provided
+      console.log('Please choose one of the following options: --mongo or --seque');
+      process.exit(1); // Exit if no valid option is provided
     }
     const rootPath = path.join(process.cwd()); // Root path of the project
+
+    if (options.compression) {
+      if (!folders.includes('Middleware')) {
+        folders.push('Middleware');
+      }
+      try {
+        const compressFileContent = fs.readFileSync(path.join(__dirname, 'compressFile.js'), 'utf8');
+        files.push({ folder: 'Middleware', name: 'compressFile.js', content: compressFileContent });
+        cmd += ' sharp archiver';
+      } catch (err) {
+        console.error('Error reading compressFile.js:', err);
+      }
+    }
+
     // Create directories as specified in folders array
     folders.forEach(folder => {
-        mkdirp.sync(path.join(rootPath, folder)); // Create directory synchronously
-        console.log(`Folder "${folder}" created successfully.`);
+      mkdirp.sync(path.join(rootPath, folder)); // Create directory synchronously
+      console.log(`Folder "${folder}" created successfully.`);
     });
 
     // Create files as specified in files array
     files.forEach(file => {
-        const filePath = file.folder ? path.join(rootPath, file.folder, file.name) : path.join(rootPath, file.name);
-        fs.writeFileSync(filePath, file.content); // Write file synchronously
-        console.log(`File "${file.name}" created successfully.`);
+      const filePath = file.folder ? path.join(rootPath, file.folder, file.name) : path.join(rootPath, file.name);
+      fs.writeFileSync(filePath, file.content); // Write file synchronously
+      console.log(`File "${file.name}" created successfully.`);
     });
 
     // Execute command to install required packages
     console.log('Installing required packages...');
-    exec(`${options.npm ? "npm install "+ cmd: options.yarn ? "yarn add " + cmd : options.pnpm ? "pnpm add " + cmd : "bun add "+ cmd}`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error installing packages: ${error.message}`);
-            process.exit(1);
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            process.exit(1);
-          }
-        console.log(`Packages installed successfully: ${stdout}`);
-        process.exit(0); // Force process exit after installation completes
+    exec(`${options.npm ? "npm install " + cmd : options.yarn ? "yarn add " + cmd : options.pnpm ? "pnpm add " + cmd : "bun add " + cmd}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error installing packages: ${error.message}`);
+        process.exit(1);
+      }
+      if (stderr) {
+        console.error(`stderr: ${stderr}`);
+        process.exit(1);
+      }
+      console.log(`Packages installed successfully: ${stdout}`);
+      process.exit(0); // Force process exit after installation completes
 
     }); // Close the readline interface
     return;
